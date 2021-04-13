@@ -1,0 +1,19 @@
+variables:
+-  name: projectName
+   value: JASBlazor
+-  name: vmImage
+   value: ubuntu-latest
+-  name: buildConfiguration
+   value: Release
+-  name: runtime
+   value: linux-x64
+-  name: azureSubscription
+   value: 91ae432e-45b1-49bb-bf11-b305b9d061a6
+-  name: appType
+   value: webAppLinux
+-  name: WebAppName
+   value: jas-blazor
+-  name: RuntimeStack
+   value: DOTNETCORE|LTS
+-  name: ConnectionType
+   value: AzureRM

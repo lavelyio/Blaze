@@ -1,0 +1,97 @@
+trigger: 
+-  master
+-  release/*
+
+variables:
+-  name: projectName
+   value: JASBlazor
+-  name: vmImage
+   value: ubuntu-latest
+-  name: buildConfiguration
+   value: Release
+-  name: runtime
+   value: linux-x64
+-  name: azureSubscription
+   value: 'JASBlazorApp'
+-  name: appType
+   value: webAppLinux
+-  name: WebAppName
+   value: jasblazor
+-  name: RuntimeStack
+   value: DOTNETCORE|LTS
+-  name: ConnectionType
+   value: AzureRM
+
+stages:
+# Build Stage
+-  stage: 'Build'
+   displayName: 'Build'
+   pool:
+     name: 'Azure Pipelines'
+     vmImage: 'ubuntu-latest'
+   jobs:
+   - job: 'Build'
+     steps:
+        - task: DotNetCoreCLI@2
+          inputs:
+            command: 'restore'
+            restoreSolution: '$(solution)'
+            feedsToUse: 'config'
+            nugetConfigPath: 'nuget.config'
+
+        - task: DotNetCoreCLI@2
+          displayName: '.NetCore Build'
+          inputs:
+            command: build
+            projects: |
+              JASBlazor/JASBlazor.csproj  
+        - task: DotNetCoreCLI@2
+          displayName: 'Dotnet Publish'
+          inputs:
+            command: publish
+            projects: |
+              JASBlazor/JASBlazor.csproj
+            publishWebProjects: true
+            arguments: '-c $(buildConfiguration) --runtime $(runtime) --self-contained -o $(Build.ArtifactStagingDirectory)'
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+            ArtifactName: 'drop'
+
+-  stage: 'Development'
+   jobs:
+   -  deployment: DeployWebApp
+      displayName: 'Deploy to Dev'
+      pool:
+        name: 'Azure Pipelines'
+        vmImage: 'ubuntu-latest'
+      environment: Development
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            -  script: echo Deployed to Dev
+
+-  stage: 'Production'
+   jobs:
+   -  deployment: DeployWebApp
+      displayName: 'Deploy to Production'
+      pool:
+        name: 'Azure Pipelines'
+        vmImage: 'ubuntu-latest'
+      environment: Production
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - download: current
+              artifact: drop
+            - task: AzureRmWebAppDeployment@4
+              inputs:
+                ConnectionType: 'AzureRM'
+                azureSubscription: '$(azureSubscription)'
+                appType: 'webAppLinux'
+                WebAppName: 'JASBlazor'
+                packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+                RuntimeStack: '$(RuntimeStack)'
+  

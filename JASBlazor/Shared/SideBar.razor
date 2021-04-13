@@ -1,0 +1,41 @@
+﻿<MatDrawer @bind-Opened="@Opened" Mode="MatDrawerMode.Modal" Class="sidebar sidebar-dark">
+    <div class="top-row pl-4 navbar navbar-dark">
+        <a class="navbar-brand" style="padding: 0;" href="/">JAS - Blazor</a>
+        <MatIconButton OnClick="@ToggleSidebar" Icon="close" Style="color: #fff;" />
+    </div>
+    <ul class="nav flex-column">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/" Match="NavLinkMatch.All" @onclick="@(e => ToggleSidebar())">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </li>
+        <li class="dropdown-divider">
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/todo" @onclick="@(e => ToggleSidebar())">
+                <span class="oi oi-check" aria-hidden="true"></span> To Do
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/grid" @onclick="@(e => ToggleSidebar())">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Grid
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/store-grid" @onclick="@(e => ToggleSidebar())">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Store Driven Grid
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/counter" @onclick="@(e => ToggleSidebar())">
+                <span class="oi oi-timer" aria-hidden="true"></span> Counter
+            </NavLink>
+        </li>
+    </ul>
+</MatDrawer>
+
+@code { [Parameter]
+            public bool Opened { get; set; }
+
+            [Parameter]
+            public Action ToggleSidebar { get; set; } }

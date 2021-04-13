@@ -1,0 +1,81 @@
+﻿@using JASBlazor.Redux
+@using JASBlazor.Redux.Actions.Counter
+@using Blazor.Realm.Extensions
+@inherits RealmComponent<AppState>
+
+<AuthorizeView>
+    <Authorized>
+        <div class="jas-header-account">
+            <span class="jas-head-counter">Current Count: <span>@State.Count</span></span>
+            <span class="jas-font-sm">Welcome,</span> <p class="jas-head-title">@context.User.Identity.Name</p>
+            <MatIcon Icon="account_circle" />
+            <div uk-dropdown="mode: click">
+                <ul class="uk-nav uk-dropdown-nav">
+                    <li class="uk-active"><a href="#">Account</a></li>
+                    <li>
+                        <NavLink href="MicrosoftIdentity/Account/SignOut">
+                            <MatIconButton Icon="eject" /> Logout
+                        </NavLink>
+                    </li>
+                    <li class="uk-nav-divider"></li>
+                    <li class="uk-nav-header">Pages - Mvvm</li>
+                    <li><a href="/todo">ToDos</a></li>
+                    <li><a href="/grid">DataGrid</a></li>
+
+                    <li class="uk-nav-divider"></li>
+
+                    <li class="uk-nav-header">Pages - Redux</li>
+                    <li><a href="/counter">Counter</a></li>
+                    <li><a href="/store-grid">DataGrid</a></li>
+                </ul>
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <span class="jas-head-counter">Current Count: <span>@State.Count</span></span>
+        <NavLink href="MicrosoftIdentity/Account/SignIn" >
+            <MatIcon Icon="account_circle" />
+            </NavLink>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    MatIconButton Close;
+    BaseMatMenu AccountMenu;
+
+    public void OnClick(MouseEventArgs e)
+    {
+        this.AccountMenu.OpenAsync(Close.Ref);
+    }
+}
+
+<style>
+    .jas-header-account {
+        display: flex;
+        align-items: center;
+    }
+
+    .jas-head-title {
+        padding-right: 20px;
+        padding-left: 10px;
+        color: #b7b7b7f8;
+        /* padding: 0px 20px; */
+    }
+
+    .jas-head-counter {
+        margin-right: 10px;
+        width: 150px;
+    }
+
+    .jas-font-sm {
+        font-size: 10pt;
+        transition: all 400ms ease-in-out;
+    }
+
+    .jas-head-title:hover {
+        color: #fff;
+    }
+
+    }
+    }
+</style>

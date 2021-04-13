@@ -1,0 +1,41 @@
+parameters:
+  projectName: ''
+  vmImage: ''
+  buildConfiguration: ''
+  runtime: ''
+
+stages:
+-  stage: 'Build'
+   displayName: 'Build'
+   pool:
+     name: 'Azure Pipelines'
+     vmImage: ${{ parameters.vmImage }}
+   jobs:
+   - job: 'Build'
+     steps:
+        - task: DotNetCoreCLI@1
+          inputs:
+            command: 'restore'
+            restoreSolution: '$(solution)'
+            feedsToUse: 'config'
+            nugetConfigPath: 'nuget.config'
+
+        - task: DotNetCoreCLI@2
+          displayName: '.NetCore Build'
+          inputs:
+            command: build
+            projects: |
+              ${{ parameters.projectName }}/${{ parameters.projectName }}.csproj  
+        - task: DotNetCoreCLI@3
+          displayName: 'Dotnet Publish'
+          inputs:
+            command: publish
+            projects: |
+              ${{ parameters.projectName }}/${{ parameters.projectName }}.csproj
+            publishWebProjects: true
+            arguments: '-c $(buildConfiguration) --runtime $(runtime) --self-contained -o $(Build.ArtifactStagingDirectory)'
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+            ArtifactName: 'drop'
+        

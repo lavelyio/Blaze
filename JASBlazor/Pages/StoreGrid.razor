@@ -1,0 +1,29 @@
+﻿@page "/store-grid"
+@using JASBlazor.Data
+@using Microsoft.EntityFrameworkCore
+@using JASBlazor.Redux
+@using JASBlazor.Redux.Actions.Issues
+@using Blazor.Realm.Extensions
+@using Blazor.Realm.Async
+@inject IDbContextFactory<JASDBContext> Factory
+@inherits RealmComponent<AppState>
+
+<RealmStateContainer TState="AppState">
+    <ComponentTemplate Context="store">
+        @{
+            AppState State = store.GetState();
+            Action<IRealmAction> Dispatch = store.Dispatch;
+            Action Load = () => Dispatch(new Redux.Actions.Issues.FetchAsync(store, Factory));
+            Action Clear = () => Dispatch(new Redux.Actions.Issues.Clear());
+            Action<GridCommandEventArgs> Delete = (GridCommandEventArgs args) => Dispatch(new Redux.Actions.Issues.DeleteIssueAsync(store, Factory, args));
+            Action<GridCommandEventArgs> Create = (GridCommandEventArgs args) => Dispatch(new Redux.Actions.Issues.CreateIssueAsync(store, Factory, args));
+            Action<GridCommandEventArgs> Update = (GridCommandEventArgs args) => Dispatch(new Redux.Actions.Issues.UpdateIssueAsync(store, Factory, args));
+        }
+        <DataGridTemplate OnLoad="Load"
+                          Data=@State.Issues
+                          IsBusy=@State.IsLoading
+                          OnDelete="Delete"
+                          OnCreate="Create"
+                          OnUpdate="Update" />
+    </ComponentTemplate>
+</RealmStateContainer>

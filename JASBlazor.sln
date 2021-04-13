@@ -1,0 +1,69 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JASBlazor", "JASBlazor\JASBlazor.csproj", "{4D5C3353-4E71-42B9-B720-3B880FDA1120}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E43AAA8A-CAB5-4526-8BD8-83321319AD65}"
+	ProjectSection(SolutionItems) = preProject
+		azure-pipelines.yml = azure-pipelines.yml
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pipelines", "Pipelines", "{86109BAB-C87F-4369-BADF-63E3971AC8C1}"
+	ProjectSection(SolutionItems) = preProject
+		azure-pipelines.yml = azure-pipelines.yml
+		base-pipeline.yaml = base-pipeline.yaml
+		build-pipeline.yaml = build-pipeline.yaml
+		deploy-pipeline.yaml = deploy-pipeline.yaml
+		variables.yaml = variables.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "telerik", "telerik", "{0C7773E6-C0F6-42FB-B947-1F5F47DE42DD}"
+	ProjectSection(SolutionItems) = preProject
+		telerik\Telerik.Documents.Spreadsheet.FormatProviders.Pdf.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.Spreadsheet.FormatProviders.Pdf.Trial.2021.1.222.nupkg
+		telerik\Telerik.UI.for.Blazor.Trial.2.22.0.nupkg = telerik\Telerik.UI.for.Blazor.Trial.2.22.0.nupkg
+		telerik\Telerik.Documents.Fixed.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.Fixed.Trial.2021.1.222.nupkg
+		telerik\Telerik.Documents.Spreadsheet.FormatProviders.OpenXml.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.Spreadsheet.FormatProviders.OpenXml.Trial.2021.1.222.nupkg
+		telerik\Telerik.DataSource.Trial.2.0.9.nupkg = telerik\Telerik.DataSource.Trial.2.0.9.nupkg
+		telerik\Telerik.Zip.Trial.2021.1.222.nupkg = telerik\Telerik.Zip.Trial.2021.1.222.nupkg
+		telerik\Telerik.Documents.SpreadsheetStreaming.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.SpreadsheetStreaming.Trial.2021.1.222.nupkg
+		telerik\Telerik.Documents.CMapUtils.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.CMapUtils.Trial.2021.1.222.nupkg
+		telerik\Telerik.Documents.Spreadsheet.FormatProviders.Xls.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.Spreadsheet.FormatProviders.Xls.Trial.2021.1.222.nupkg
+		telerik\Telerik.Documents.Flow.FormatProviders.Pdf.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.Flow.FormatProviders.Pdf.Trial.2021.1.222.nupkg
+		telerik\Telerik.Documents.Flow.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.Flow.Trial.2021.1.222.nupkg
+		telerik\Telerik.Recurrence.Trial.0.1.0.nupkg = telerik\Telerik.Recurrence.Trial.0.1.0.nupkg
+		telerik\Telerik.Documents.Spreadsheet.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.Spreadsheet.Trial.2021.1.222.nupkg
+		telerik\Telerik.Documents.Core.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.Core.Trial.2021.1.222.nupkg
+		telerik\Telerik.Documents.ImageUtils.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.ImageUtils.Trial.2021.1.222.nupkg
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4D5C3353-4E71-42B9-B720-3B880FDA1120}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D5C3353-4E71-42B9-B720-3B880FDA1120}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D5C3353-4E71-42B9-B720-3B880FDA1120}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D5C3353-4E71-42B9-B720-3B880FDA1120}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{86109BAB-C87F-4369-BADF-63E3971AC8C1} = {E43AAA8A-CAB5-4526-8BD8-83321319AD65}
+		{0C7773E6-C0F6-42FB-B947-1F5F47DE42DD} = {E43AAA8A-CAB5-4526-8BD8-83321319AD65}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {178A8E83-BA9F-4907-8BDD-2C51C609C0E9}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = PrefixedHierarchical
+		$0.StandardHeader = $2
+	EndGlobalSection
+EndGlobal

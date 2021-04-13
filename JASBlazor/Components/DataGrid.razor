@@ -1,0 +1,36 @@
+﻿@using Telerik
+@using Data
+@namespace JASBlazor.Components
+
+<hr />
+
+<TelerikLoaderContainer Visible="@(ViewModel.IsBusy)"></TelerikLoaderContainer>
+
+<TelerikGrid Class="uk-table uk-table-striped" Data="@ViewModel.Data" Pageable="true" PageSize="15" Sortable="true" Height="600px"
+             EditMode="@GridEditMode.Popup" Reorderable="true" Resizable="true" Groupable="true" FilterMode="GridFilterMode.FilterMenu"
+             OnUpdate="@ViewModel.UpdateIssue" OnDelete="@ViewModel.DeleteIssue" OnCreate="@ViewModel.CreateIssue">
+    <GridToolBar>
+        <GridCommandButton Command="Add" Icon="add">Generate Issue</GridCommandButton>
+        <GridCommandButton OnClick="@ViewModel.DeleteRandomIssue" Icon="trash">Delete Random Issue</GridCommandButton>
+    </GridToolBar>
+    <GridColumns>
+        <GridColumn Field="@(nameof(Issue.Id))" Title="ID" Groupable="false" />
+        <GridColumn Field="@(nameof(Issue.IsOpen))" Title="Open">
+            <Template>
+                @{ Issue issue = context as Issue;
+                    <span class="issue-status issue-closed">
+                    </span> @(issue.IsOpen ? "open" : "closed") }
+            </Template>
+        </GridColumn>
+        <GridColumn Field="@(nameof(Issue.Title))" Title="Issue Title" Groupable="false" />
+        <GridColumn Field="@(nameof(Issue.CreatedOn))" Title="Created On" />
+        <GridColumn Field="@(nameof(Issue.ClosedOn))" Title="Closed On" />
+        <GridCommandColumn Width="200px">
+            <GridCommandButton Command="Edit" Icon="edit">Edit</GridCommandButton>
+            <GridCommandButton OnClick="@ViewModel.DeleteIssue" Icon="trash">Delete</GridCommandButton>
+        </GridCommandColumn>
+    </GridColumns>
+</TelerikGrid>
+
+@code { [CascadingParameter(Name = "ViewModel")]
+            IDataGridViewModel ViewModel { get; set; } }

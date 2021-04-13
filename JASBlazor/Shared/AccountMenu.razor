@@ -1,0 +1,24 @@
+﻿<p>
+    <MatButton Label="Menu" OnClick="@OnClick2" @ref="Button2"></MatButton>
+    <MatMenu @ref="Menu2">
+        <MatList>
+            <MatListItem>Item 1</MatListItem>
+            <MatListItem>Item 2</MatListItem>
+            <MatListItem>Item 3</MatListItem>
+            <MatListItem>Item 4</MatListItem>
+            <MatListItem>Item 5</MatListItem>
+        </MatList>
+    </MatMenu>
+</p>
+
+@code
+        {
+    MatButton Button2;
+    BaseMatMenu Menu2;
+
+    public void OnClick2(MouseEventArgs e)
+    {
+        this.Menu2.OpenAsync(Button2.Ref);
+    }
+
+}

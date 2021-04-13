@@ -1,0 +1,19 @@
+﻿@page "/counter"
+@using JASBlazor.Redux
+@using JASBlazor.Redux.Actions.Counter
+@using Blazor.Realm.Extensions
+@inherits RealmComponent<AppState>
+
+<CounterTemplate Count=@Store.GetState().Count ChangeAmount=1 OnIncrement=@Increment OnDecrement=@Decrement />
+
+    @code {
+        void Increment()
+        {
+            Dispatch(new Increment(1));
+        }
+
+        void Decrement()
+        {
+            Dispatch(new Decrement(1));
+        }
+    }

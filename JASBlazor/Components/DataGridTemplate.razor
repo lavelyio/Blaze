@@ -1,0 +1,68 @@
+﻿@using System.Collections.ObjectModel;
+@using System.Diagnostics;
+<h3>DataGridTemplate using App State to management re-renders</h3>
+<TelerikLoaderContainer Visible="@(IsBusy)"></TelerikLoaderContainer>
+
+<TelerikGrid Class="uk-table uk-table-striped" Data="Data" Pageable="true" PageSize="15" Sortable="true" Height="600px"
+             EditMode="@GridEditMode.Popup" Reorderable="true" Resizable="true" Groupable="true" FilterMode="GridFilterMode.FilterMenu"
+             OnUpdate=@OnUpdate OnDelete=OnDelete OnCreate=@OnCreate>
+    <GridToolBar>
+        <GridCommandButton Command="Add" Icon="add">Generate Issue</GridCommandButton>
+        <GridCommandButton OnClick="OnDeleteRandom" Icon="trash">Delete Random Issue</GridCommandButton>
+    </GridToolBar>
+    <GridColumns>
+        <GridColumn Field="@(nameof(Issue.Id))" Title="ID" Groupable="false" />
+        <GridColumn Field="@(nameof(Issue.IsOpen))" Title="Open">
+            <Template>
+                @{ Issue issue = context as Issue;
+                    <span class="issue-status issue-closed">
+                    </span>
+                    @(issue.IsOpen ? "open" : "closed") }
+            </Template>
+        </GridColumn>
+        <GridColumn Field="@(nameof(Issue.Title))" Title="Issue Title" Groupable="false" />
+        <GridColumn Field="@(nameof(Issue.CreatedOn))" Title="Created On" />
+        <GridColumn Field="@(nameof(Issue.ClosedOn))" Title="Closed On" />
+        <GridCommandColumn Width="200px">
+            <GridCommandButton Command="Edit" Icon="edit">Edit</GridCommandButton>
+            <GridCommandButton OnClick="OnDelete" Icon="trash">Delete</GridCommandButton>
+        </GridCommandColumn>
+    </GridColumns>
+</TelerikGrid>
+
+@code {
+
+    [Parameter]
+    public ObservableCollection<Issue> Data { get; set; }
+
+    [Parameter]
+    public Action OnLoad { get; set; }
+
+    [Parameter]
+    public bool IsBusy { get; set; }
+
+    [Parameter]
+    public EventCallback<GridCommandEventArgs> OnCreate { get; set; }
+
+    [Parameter]
+    public EventCallback<GridCommandEventArgs> OnDelete { get; set; }
+
+    [Parameter]
+    public EventCallback<GridCommandEventArgs> OnUpdate { get; set; }
+
+    [Parameter]
+    public EventCallback OnDeleteRandom { get; set; }
+
+    protected override void OnInitialized()
+    {
+        OnLoad();
+        base.OnInitialized();
+    }
+
+    void HandleDelete(GridCommandEventArgs args)
+    {
+        Debug.WriteLine("Deleting object");
+        OnDelete.InvokeAsync(args);
+    }
+
+}

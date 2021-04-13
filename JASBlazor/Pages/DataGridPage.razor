@@ -1,0 +1,46 @@
+﻿@page "/grid"
+
+@using JASBlazor.ViewModels
+@using JASBlazor.Components
+@using Microsoft.EntityFrameworkCore
+@using System.ComponentModel
+@using JASBlazor.Data
+@inject IDbContextFactory<JASDBContext> DbFactory
+@inject IDataGridViewModel ViewModel
+@implements IDisposable
+
+<CascadingValue Value=@ViewModel Name="ViewModel">
+    <DataGrid />
+</CascadingValue>
+
+@code { protected override async Task OnInitializedAsync()
+    {
+        ViewModel.Initialize(DbFactory);
+
+        ViewModel.PropertyChanged += async (sender, e) =>
+        {
+            await InvokeAsync(() =>
+            {
+                StateHasChanged();
+            });
+        };
+        await base.OnInitializedAsync();
+    }
+
+    async void OnPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+    {
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+    }
+
+    public void Dispose()
+    {
+        ViewModel.PropertyChanged -= OnPropertyChangedHandler;
+    } }

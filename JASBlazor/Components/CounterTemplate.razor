@@ -1,0 +1,38 @@
+﻿<div class="counterContainer">
+    <h1>Counter</h1>
+
+    <p>Current count: <h3>@Count</h3></p>
+
+    <div class="btn-group">
+        <button class="btn btn-primary" onclick="@OnIncrement">Increment</button>
+
+        <button class="btn btn-danger" onclick="@OnDecrement">Decrement</button>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int Count { get; set; } = 0;
+    [Parameter] public int ChangeAmount { get; set; } = 1;
+    [Parameter] public Action OnIncrement { get; set; }
+    [Parameter] public Action OnDecrement { get; set; }
+}
+
+<style>
+    .counterContainer {
+        width: 350px;
+        margin: 0 auto;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f8f8f8f8;
+        border-radius: 6px;
+        box-shadow: 1px 1px 12px rgba(0,0,0,0.4);
+    }
+
+    h1, p {
+        text-align: center;
+        width: 100%
+    }
+</style>

@@ -1,17 +1,14 @@
 ﻿using JASBlazor.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 
 namespace JASBlazor.ViewModels
 {
-
     public class ToDoFinalViewModel : BaseViewModel, IToDoViewModel
     {
         private List<ToDoItem> toDoItemList = new List<ToDoItem>();
+
         public List<ToDoItem> ToDoItemList
         {
             get => toDoItemList;
@@ -19,10 +16,10 @@ namespace JASBlazor.ViewModels
             {
                 SetValue(ref toDoItemList, value);
             }
-
         }
 
         private ToDoItem toDoItem = new ToDoItem();
+
         public ToDoItem ToDoItem
         {
             get => toDoItem;

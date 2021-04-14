@@ -24,10 +24,10 @@
 </EditForm>
 
 @code { [CascadingParameter(Name = "ViewModel")]
-            IToDoViewModel ViewModel { get; set; }
+    IToDoViewModel ViewModel { get; set; }
 
-            void SaveTodoItem()
-            {
-                ViewModel.SaveToDoItem(ViewModel.ToDoItem);
-                ViewModel.ToDoItem = new ToDoItem();
-            } }
+    void SaveTodoItem()
+    {
+        ViewModel.SaveToDoItem(ViewModel.ToDoItem);
+        ViewModel.ToDoItem = new ToDoItem();
+    } }

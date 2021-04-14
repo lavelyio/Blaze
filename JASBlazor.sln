@@ -22,22 +22,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pipelines", "Pipelines", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "telerik", "telerik", "{0C7773E6-C0F6-42FB-B947-1F5F47DE42DD}"
 	ProjectSection(SolutionItems) = preProject
-		telerik\Telerik.Documents.Spreadsheet.FormatProviders.Pdf.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.Spreadsheet.FormatProviders.Pdf.Trial.2021.1.222.nupkg
-		telerik\Telerik.UI.for.Blazor.Trial.2.22.0.nupkg = telerik\Telerik.UI.for.Blazor.Trial.2.22.0.nupkg
-		telerik\Telerik.Documents.Fixed.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.Fixed.Trial.2021.1.222.nupkg
-		telerik\Telerik.Documents.Spreadsheet.FormatProviders.OpenXml.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.Spreadsheet.FormatProviders.OpenXml.Trial.2021.1.222.nupkg
 		telerik\Telerik.DataSource.Trial.2.0.9.nupkg = telerik\Telerik.DataSource.Trial.2.0.9.nupkg
-		telerik\Telerik.Zip.Trial.2021.1.222.nupkg = telerik\Telerik.Zip.Trial.2021.1.222.nupkg
-		telerik\Telerik.Documents.SpreadsheetStreaming.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.SpreadsheetStreaming.Trial.2021.1.222.nupkg
 		telerik\Telerik.Documents.CMapUtils.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.CMapUtils.Trial.2021.1.222.nupkg
-		telerik\Telerik.Documents.Spreadsheet.FormatProviders.Xls.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.Spreadsheet.FormatProviders.Xls.Trial.2021.1.222.nupkg
+		telerik\Telerik.Documents.Core.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.Core.Trial.2021.1.222.nupkg
+		telerik\Telerik.Documents.Fixed.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.Fixed.Trial.2021.1.222.nupkg
 		telerik\Telerik.Documents.Flow.FormatProviders.Pdf.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.Flow.FormatProviders.Pdf.Trial.2021.1.222.nupkg
 		telerik\Telerik.Documents.Flow.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.Flow.Trial.2021.1.222.nupkg
-		telerik\Telerik.Recurrence.Trial.0.1.0.nupkg = telerik\Telerik.Recurrence.Trial.0.1.0.nupkg
-		telerik\Telerik.Documents.Spreadsheet.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.Spreadsheet.Trial.2021.1.222.nupkg
-		telerik\Telerik.Documents.Core.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.Core.Trial.2021.1.222.nupkg
 		telerik\Telerik.Documents.ImageUtils.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.ImageUtils.Trial.2021.1.222.nupkg
+		telerik\Telerik.Documents.Spreadsheet.FormatProviders.OpenXml.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.Spreadsheet.FormatProviders.OpenXml.Trial.2021.1.222.nupkg
+		telerik\Telerik.Documents.Spreadsheet.FormatProviders.Pdf.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.Spreadsheet.FormatProviders.Pdf.Trial.2021.1.222.nupkg
+		telerik\Telerik.Documents.Spreadsheet.FormatProviders.Xls.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.Spreadsheet.FormatProviders.Xls.Trial.2021.1.222.nupkg
+		telerik\Telerik.Documents.Spreadsheet.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.Spreadsheet.Trial.2021.1.222.nupkg
+		telerik\Telerik.Documents.SpreadsheetStreaming.Trial.2021.1.222.nupkg = telerik\Telerik.Documents.SpreadsheetStreaming.Trial.2021.1.222.nupkg
+		telerik\Telerik.Recurrence.Trial.0.1.0.nupkg = telerik\Telerik.Recurrence.Trial.0.1.0.nupkg
+		telerik\Telerik.UI.for.Blazor.Trial.2.22.0.nupkg = telerik\Telerik.UI.for.Blazor.Trial.2.22.0.nupkg
+		telerik\Telerik.Zip.Trial.2021.1.222.nupkg = telerik\Telerik.Zip.Trial.2021.1.222.nupkg
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JASBlazor.Tests", "JASBlazor.Tests\JASBlazor.Tests.csproj", "{EEF7190A-6447-4B95-892C-96AD86EE3C90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,10 @@ Global
 		{4D5C3353-4E71-42B9-B720-3B880FDA1120}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D5C3353-4E71-42B9-B720-3B880FDA1120}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D5C3353-4E71-42B9-B720-3B880FDA1120}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEF7190A-6447-4B95-892C-96AD86EE3C90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEF7190A-6447-4B95-892C-96AD86EE3C90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEF7190A-6447-4B95-892C-96AD86EE3C90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEF7190A-6447-4B95-892C-96AD86EE3C90}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

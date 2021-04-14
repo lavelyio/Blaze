@@ -5,7 +5,7 @@
     <SideBar Opened="@Opened" ToggleSidebar=@ButtonClicked />
 
     <MatDrawerContent>
-        <div class="@CSS">
+        <div class="main">
             <div class="top-row px-4 jas-header">
                 <MatIconButton OnClick="@((e) => ButtonClicked())" Icon="menu" Style="color: #fff" />
                 <div>
@@ -13,7 +13,7 @@
                 </div>
             </div>
 
-            <div class="content px-4">
+            <div class="content px-4 container">
                 @Body
             </div>
         </div>

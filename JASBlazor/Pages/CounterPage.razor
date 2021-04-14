@@ -6,14 +6,14 @@
 
 <CounterTemplate Count=@Store.GetState().Count ChangeAmount=1 OnIncrement=@Increment OnDecrement=@Decrement />
 
-    @code {
-        void Increment()
-        {
-            Dispatch(new Increment(1));
-        }
-
-        void Decrement()
-        {
-            Dispatch(new Decrement(1));
-        }
+@code {
+    void Increment()
+    {
+        Dispatch(new Increment(1));
     }
+
+    void Decrement()
+    {
+        Dispatch(new Decrement(1));
+    }
+}

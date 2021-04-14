@@ -17,10 +17,11 @@
             Action<Issue> Update = (Issue issue) => Dispatch(new Redux.Actions.Issues.UpdateIssueAsync(store, DbContext, issue));
         }
         @{
-            if (State.IsLoading) {
-                <MatProgressBar Indeterminate="true"/>
-                }
+            if (State.IsLoading)
+            {
+                <MatProgressBar Indeterminate="true" />
             }
+        }
         <RadzenGrid @ref="issuesGrid"
                     ColumnWidth="130px"
                     AllowFiltering="true"
@@ -102,7 +103,6 @@
     protected override void OnInitialized()
     {
         Dispatch(new Redux.Actions.Issues.FetchAsync(Store, DbContext));
-
 
         base.OnInitialized();
     }

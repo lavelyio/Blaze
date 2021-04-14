@@ -32,11 +32,14 @@
         </div>
     </Authorized>
     <NotAuthorized>
-        <span class="jas-head-counter">Current Count: <span>@State.Count</span></span>
-        <NavLink href="MicrosoftIdentity/Account/SignIn" >
-            <MatIcon Icon="account_circle" />
+        <div style="display: flex; align-items: center">
+            <span class="jas-head-counter">Current Count: <span>@State.Count</span></span>
+            <NavLink href="MicrosoftIdentity/Account/SignIn">
+                <MatIcon Icon="account_circle" />
             </NavLink>
+        </div>
     </NotAuthorized>
+   
 </AuthorizeView>
 
 @code {

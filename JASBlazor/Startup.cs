@@ -31,9 +31,6 @@ namespace JASBlazor
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddTelerikBlazor();
-            
             // Register our ViewModels/ Services
             services.AddTransient<IToDoViewModel, ToDoBasicViewModel>();
             services.AddSingleton<IDataGridViewModel, DataGridViewModel>();
@@ -41,7 +38,6 @@ namespace JASBlazor
             services.AddScoped<NotificationService>();
             services.AddScoped<TooltipService>();
             services.AddScoped<ContextMenuService>();
-
 
             // Now Wire Up our Store
             services.AddRealmStore(new AppState(), Reducers.RootReducer);
@@ -56,7 +52,6 @@ namespace JASBlazor
             services.AddControllersWithViews()
                 .AddMicrosoftIdentityUI();
 
-
             services.AddRazorPages(options =>
             {
                 /*
@@ -69,7 +64,6 @@ namespace JASBlazor
                 //options.Conventions.AllowAnonymousToPage("/Private/PublicPage");
                 //options.Conventions.AllowAnonymousToFolder("/Private/PublicPages");
             });
-
 
             // Our DB Access
             services.AddDbContext<JASDBContext>(
@@ -113,7 +107,6 @@ namespace JASBlazor
 
                 // Wire up our SignalR "Hubs".
                 endpoints.MapHub<ChatHub>(ChatHub.HubUrl);
-
             });
         }
     }

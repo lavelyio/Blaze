@@ -1,34 +1,37 @@
 ﻿@using JASBlazor.Shared
 @inherits LayoutComponentBase
 
-<TelerikRootComponent>
-    <MatDrawerContainer Style="width: 100vw; height: 100vh; border-right: 1px solid #222">
-        <SideBar Opened="@Opened" ToggleSidebar=@ButtonClicked />
+<MatDrawerContainer Style="width: 100vw; height: 100vh; border-right: 1px solid #222">
+    <SideBar Opened="@Opened" ToggleSidebar=@ButtonClicked />
 
-        <MatDrawerContent>
-            <div class="main">
-                <div class="top-row px-4 jas-header">
-                    <MatIconButton OnClick="@((e) => ButtonClicked())" Icon="menu" Style="color: #fff" />
-                    <div>
-                        <LoginDisplay />
-                    </div>
-                </div>
-
-                <div class="content px-4">
-                    @Body
+    <MatDrawerContent>
+        <div class="@CSS">
+            <div class="top-row px-4 jas-header">
+                <MatIconButton OnClick="@((e) => ButtonClicked())" Icon="menu" Style="color: #fff" />
+                <div>
+                    <LoginDisplay />
                 </div>
             </div>
-        </MatDrawerContent>
-    </MatDrawerContainer>
-</TelerikRootComponent>
+
+            <div class="content px-4">
+                @Body
+            </div>
+        </div>
+    </MatDrawerContent>
+</MatDrawerContainer>
 
 @code
-{ bool Opened = false;
+{
+    bool Opened = false;
+
+    public string CSS => Opened ? "main sidebar-active" : "main";
 
     void ButtonClicked()
     {
         Opened = !Opened;
-    } }
+    }
+
+}
 
 <style>
     .jas-header {
@@ -37,6 +40,13 @@
         justify-content: space-between !important;
         align-items: center;
         padding: 15px 0px;
+    }
+
+    .sidebar-active {
+        filter: blur(1.5px);
+        width: 100%;
+        background: rgba(0,0,0,0.2);
+        height: 100%;
     }
 
     .sidebar-dark {

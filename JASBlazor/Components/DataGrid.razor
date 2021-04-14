@@ -1,5 +1,4 @@
-﻿@using Telerik
-@using Data
+﻿@using Data
 
 @namespace JASBlazor.Components
 @using System.Collections.Generic
@@ -95,7 +94,6 @@
             </RadzenGrid>
         }
     }
-
 </div>
 
 <style>
@@ -103,7 +101,6 @@
         margin: 30px 50px;
     }
 </style>
-
 
 @code {
     [CascadingParameter(Name = "ViewModel")]
@@ -122,7 +119,8 @@
         issuesGrid.EditRow(issue);
     }
 
-    void OnUpdateRow(Issue issue) {
+    void OnUpdateRow(Issue issue)
+    {
         ViewModel.UpdateIssue(issue);
     }
 
@@ -147,7 +145,8 @@
         issuesGrid.InsertRow(new Issue());
     }
 
-    void OnCreateRow(Issue issue) {
+    void OnCreateRow(Issue issue)
+    {
         ViewModel.CreateIssue(issue);
     }
 }

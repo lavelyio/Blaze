@@ -2,7 +2,7 @@ name: Build and deploy .NET Core app to Linux WebApp JASBlazor20210414114906
 on:
   push:
     branches:
-    - main
+    - Remove-Telerik
 env:
   AZURE_WEBAPP_NAME: JASBlazor20210414114906
   AZURE_WEBAPP_PACKAGE_PATH: JASBlazor/publish

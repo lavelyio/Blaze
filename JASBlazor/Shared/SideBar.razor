@@ -12,7 +12,7 @@
         <li class="dropdown-divider">
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="chatroom">
+            <NavLink class="nav-link" href="/chatroom" @onclick="@(e => ToggleSidebar())">
                 <span class="oi oi-chat" aria-hidden="true"></span> Chat room
             </NavLink>
         </li>
@@ -40,7 +40,7 @@
 </MatDrawer>
 
 @code { [Parameter]
-            public bool Opened { get; set; }
+    public bool Opened { get; set; }
 
-            [Parameter]
-            public Action ToggleSidebar { get; set; } }
+    [Parameter]
+    public Action ToggleSidebar { get; set; } }

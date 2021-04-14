@@ -1,17 +1,14 @@
 ﻿using JASBlazor.Data;
 using JASBlazor.Models;
-using Microsoft.AspNetCore.Components;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using Telerik.Blazor.Components;
 
-namespace JASBlazor.ViewModels {
-
-    public interface IDataGridViewModel {
-
+namespace JASBlazor.ViewModels
+{
+    public interface IDataGridViewModel
+    {
         public JASDBContext Context { get; set; }
         bool IsBusy { get; set; }
         int DataItems { get; }

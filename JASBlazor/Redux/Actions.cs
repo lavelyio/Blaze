@@ -7,7 +7,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Telerik.Blazor.Components;
 
 namespace JASBlazor.Redux.Actions
 {
@@ -183,7 +182,7 @@ namespace JASBlazor.Redux.Actions
             /// <param name="store"></param>
             /// <param name="factory"></param>
             /// <param name="args"></param>
-            public UpdateIssueAsync(Store<AppState> store,JASDBContext DbContext, Issue issue)
+            public UpdateIssueAsync(Store<AppState> store, JASDBContext DbContext, Issue issue)
             {
                 Store = store ?? throw new ArgumentNullException(nameof(store));
                 _context = DbContext ?? throw new ArgumentNullException(nameof(DbContext));

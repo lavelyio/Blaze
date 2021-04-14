@@ -32,10 +32,12 @@
         </div>
     </Authorized>
     <NotAuthorized>
-        <span class="jas-head-counter">Current Count: <span>@State.Count</span></span>
-        <NavLink href="MicrosoftIdentity/Account/SignIn" >
-            <MatIcon Icon="account_circle" />
+        <div style="display: flex; align-items: center">
+            <span class="jas-head-counter">Current Count: <span>@State.Count</span></span>
+            <NavLink href="MicrosoftIdentity/Account/SignIn">
+                <MatIcon Icon="account_circle" />
             </NavLink>
+        </div>
     </NotAuthorized>
 </AuthorizeView>
 
@@ -59,6 +61,7 @@
         padding-right: 20px;
         padding-left: 10px;
         color: #b7b7b7f8;
+        margin: 0;
         /* padding: 0px 20px; */
     }
 
@@ -74,8 +77,5 @@
 
     .jas-head-title:hover {
         color: #fff;
-    }
-
-    }
     }
 </style>

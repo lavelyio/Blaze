@@ -1,9 +1,6 @@
 ﻿using JASBlazor.Models;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace JASBlazor.Redux
 {
@@ -18,6 +15,4 @@ namespace JASBlazor.Redux
 
         public ObservableCollection<Issue> Issues { get; set; }
     }
-
-
 }

@@ -1,11 +1,8 @@
 ﻿@page "/store-grid"
+
 @using JASBlazor.Data
-@using Microsoft.EntityFrameworkCore
 @using JASBlazor.Redux
-@using JASBlazor.Redux.Actions.Issues
-@using Blazor.Realm.Extensions
-@using Blazor.Realm.Async
-@inject IDbContextFactory<JASDBContext> Factory
+@inject JASDBContext DbContext
 @inherits RealmComponent<AppState>
 
 <RealmStateContainer TState="AppState">
@@ -13,17 +10,111 @@
         @{
             AppState State = store.GetState();
             Action<IRealmAction> Dispatch = store.Dispatch;
-            Action Load = () => Dispatch(new Redux.Actions.Issues.FetchAsync(store, Factory));
+            Action Load = () => Dispatch(new Redux.Actions.Issues.FetchAsync(store, DbContext));
             Action Clear = () => Dispatch(new Redux.Actions.Issues.Clear());
-            Action<GridCommandEventArgs> Delete = (GridCommandEventArgs args) => Dispatch(new Redux.Actions.Issues.DeleteIssueAsync(store, Factory, args));
-            Action<GridCommandEventArgs> Create = (GridCommandEventArgs args) => Dispatch(new Redux.Actions.Issues.CreateIssueAsync(store, Factory, args));
-            Action<GridCommandEventArgs> Update = (GridCommandEventArgs args) => Dispatch(new Redux.Actions.Issues.UpdateIssueAsync(store, Factory, args));
+            Action<Issue> Delete = (Issue issue) => Dispatch(new Redux.Actions.Issues.DeleteIssueAsync(store, DbContext, issue));
+            Action<Issue> Create = (Issue issue) => Dispatch(new Redux.Actions.Issues.CreateIssueAsync(store, DbContext, issue));
+            Action<Issue> Update = (Issue issue) => Dispatch(new Redux.Actions.Issues.UpdateIssueAsync(store, DbContext, issue));
         }
-        <DataGridTemplate OnLoad="Load"
-                          Data=@State.Issues
-                          IsBusy=@State.IsLoading
-                          OnDelete="Delete"
-                          OnCreate="Create"
-                          OnUpdate="Update" />
+        @{
+            if (State.IsLoading) {
+                <MatProgressBar Indeterminate="true"/>
+                }
+            }
+        <RadzenGrid @ref="issuesGrid"
+                    ColumnWidth="130px"
+                    AllowFiltering="true"
+                    AllowPaging="true"
+                    PageSize="10"
+                    AllowSorting="true"
+                    EditMode="DataGridEditMode.Single"
+                    Data="@State.Issues"
+                    TItem="Issue"
+                    Responsive="true"
+                    Count="@State.Issues.Count"
+                    AllowColumnResize="true"
+                    RowUpdate="@Update"
+                    RowCreate="@Create">
+            <Columns>
+                <RadzenGridColumn Width="70px" TItem="Issue" Property="Id" Title="Issue ID" />
+                <RadzenGridColumn Width="100px" TItem="Issue" Property="Title" Title="Title">
+
+                    <EditTemplate Context="issue">
+                        <RadzenTextBox @bind-Value="issue.Title" Style="width:100%; display: block" Name="Title" />
+                        <RadzenRequiredValidator Text="Title is required" Component="Title" Popup="true" />
+                    </EditTemplate>
+                </RadzenGridColumn>
+                <RadzenGridColumn TItem="Issue" Property="IsOpen" Title="IsOpen">
+                    <Template Context="issue">
+                        <RadzenCheckBox @bind-Value=@issue.IsOpen TValue="bool" />
+                    </Template>
+                </RadzenGridColumn>
+                <RadzenGridColumn TItem="Issue" Property="CreatedOn" Title="Created">
+                    <Template Context="issue">
+                        @String.Format("{0:d}", issue.CreatedOn)
+                    </Template>
+                    <EditTemplate Context="order">
+                        <RadzenDatePicker @bind-Value="order.CreatedOn" Style="width:100%" />
+                    </EditTemplate>
+                </RadzenGridColumn>
+                <RadzenGridColumn TItem="Issue" Property="ClosedOn" Title="Closed">
+                    <Template Context="issue">
+                        @String.Format("{0:d}", issue.ClosedOn)
+                    </Template>
+                    <EditTemplate Context="order">
+                        <RadzenDatePicker @bind-Value="order.ClosedOn" Style="width:100%" />
+                    </EditTemplate>
+                </RadzenGridColumn>
+                <RadzenGridColumn TItem="Issue" Property="Description" Title="Description">
+                    <EditTemplate Context="issue">
+                        <RadzenTextBox @bind-Value="issue.Description" Style="width:100%; display: block" Name="Description" />
+                        <RadzenRequiredValidator Text="Description is required" Component="Description" Popup="true" />
+                    </EditTemplate>
+                </RadzenGridColumn>
+                <RadzenGridColumn TItem="Issue" Context="issue" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+                    <Template Context="issue">
+                        <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => EditRow(issue))">
+                        </RadzenButton>
+                    </Template>
+                    <EditTemplate Context="issue">
+                        <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => Update(issue))">
+                        </RadzenButton>
+                        <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => CancelEdit(issue))">
+                        </RadzenButton>
+                    </EditTemplate>
+                </RadzenGridColumn>
+                <RadzenGridColumn TItem="Issue" Context="issue" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
+                    <Template Context="issue">
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(args => Delete(issue))">
+                        </RadzenButton>
+                    </Template>
+                    <EditTemplate Context="issue">
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => Delete(issue))">
+                        </RadzenButton>
+                    </EditTemplate>
+                </RadzenGridColumn>
+            </Columns>
+        </RadzenGrid>
     </ComponentTemplate>
 </RealmStateContainer>
+
+@code {
+    protected override void OnInitialized()
+    {
+        Dispatch(new Redux.Actions.Issues.FetchAsync(Store, DbContext));
+
+
+        base.OnInitialized();
+    }
+
+    RadzenGrid<Issue> issuesGrid;
+    void EditRow(Issue issue)
+    {
+        issuesGrid.EditRow(issue);
+    }
+    void CancelEdit(Issue issue)
+    {
+        issuesGrid.CancelEditRow(issue);
+
+    }
+}

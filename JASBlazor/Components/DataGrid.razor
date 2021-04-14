@@ -1,36 +1,153 @@
 ﻿@using Telerik
 @using Data
+
 @namespace JASBlazor.Components
+@using System.Collections.Generic
+@using System.Linq.Dynamic.Core
+@using Microsoft.EntityFrameworkCore
+@using System.Collections.ObjectModel
+@inject JASDBContext DBContext
 
-<hr />
+<div class="grid-wrapper">
+    <h3>MvvM DataGrid: is busy - @ViewModel.IsBusy</h3>
 
-<TelerikLoaderContainer Visible="@(ViewModel.IsBusy)"></TelerikLoaderContainer>
+    <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add" Click="@InsertRow" />
+    @{
+        if (ViewModel.IsBusy)
+        {
+            <MatProgressBar Indeterminate="true"></MatProgressBar>
+        }
+        else
+        {
+            <RadzenGrid @ref="issuesGrid"
+                        ColumnWidth="130px"
+                        AllowFiltering="true"
+                        AllowPaging="true"
+                        PageSize="10"
+                        AllowSorting="true"
+                        EditMode="DataGridEditMode.Single"
+                        Data="@ViewModel.Data"
+                        TItem="Issue"
+                        Responsive="true"
+                        Count="@ViewModel.Data.Count"
+                        AllowColumnResize="true"
+                        RowUpdate="@OnUpdateRow"
+                        RowCreate="@OnCreateRow">
+                <Columns>
+                    <RadzenGridColumn Width="100px" TItem="Issue" Property="Id" Title="Issue ID" />
+                    <RadzenGridColumn Width="200px" TItem="Issue" Property="Title" Title="Title">
 
-<TelerikGrid Class="uk-table uk-table-striped" Data="@ViewModel.Data" Pageable="true" PageSize="15" Sortable="true" Height="600px"
-             EditMode="@GridEditMode.Popup" Reorderable="true" Resizable="true" Groupable="true" FilterMode="GridFilterMode.FilterMenu"
-             OnUpdate="@ViewModel.UpdateIssue" OnDelete="@ViewModel.DeleteIssue" OnCreate="@ViewModel.CreateIssue">
-    <GridToolBar>
-        <GridCommandButton Command="Add" Icon="add">Generate Issue</GridCommandButton>
-        <GridCommandButton OnClick="@ViewModel.DeleteRandomIssue" Icon="trash">Delete Random Issue</GridCommandButton>
-    </GridToolBar>
-    <GridColumns>
-        <GridColumn Field="@(nameof(Issue.Id))" Title="ID" Groupable="false" />
-        <GridColumn Field="@(nameof(Issue.IsOpen))" Title="Open">
-            <Template>
-                @{ Issue issue = context as Issue;
-                    <span class="issue-status issue-closed">
-                    </span> @(issue.IsOpen ? "open" : "closed") }
-            </Template>
-        </GridColumn>
-        <GridColumn Field="@(nameof(Issue.Title))" Title="Issue Title" Groupable="false" />
-        <GridColumn Field="@(nameof(Issue.CreatedOn))" Title="Created On" />
-        <GridColumn Field="@(nameof(Issue.ClosedOn))" Title="Closed On" />
-        <GridCommandColumn Width="200px">
-            <GridCommandButton Command="Edit" Icon="edit">Edit</GridCommandButton>
-            <GridCommandButton OnClick="@ViewModel.DeleteIssue" Icon="trash">Delete</GridCommandButton>
-        </GridCommandColumn>
-    </GridColumns>
-</TelerikGrid>
+                        <EditTemplate Context="issue">
+                            <RadzenTextBox @bind-Value="issue.Title" Style="width:100%; display: block" Name="Title" />
+                            <RadzenRequiredValidator Text="Title is required" Component="Title" Popup="true" />
+                        </EditTemplate>
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="Issue" Property="IsOpen" Title="IsOpen">
+                        <Template Context="issue">
+                            <RadzenCheckBox @bind-Value=@issue.IsOpen TValue="bool" />
+                        </Template>
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="Issue" Property="CreatedOn" Title="Created">
+                        <Template Context="issue">
+                            @String.Format("{0:d}", issue.CreatedOn)
+                        </Template>
+                        <EditTemplate Context="order">
+                            <RadzenDatePicker @bind-Value="order.CreatedOn" Style="width:100%" />
+                        </EditTemplate>
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="Issue" Property="ClosedOn" Title="Closed">
+                        <Template Context="issue">
+                            @String.Format("{0:d}", issue.ClosedOn)
+                        </Template>
+                        <EditTemplate Context="order">
+                            <RadzenDatePicker @bind-Value="order.ClosedOn" Style="width:100%" />
+                        </EditTemplate>
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="Issue" Property="Description" Title="Description">
+                        <EditTemplate Context="issue">
+                            <RadzenTextBox @bind-Value="issue.Description" Style="width:100%; display: block" Name="Description" />
+                            <RadzenRequiredValidator Text="Description is required" Component="Description" Popup="true" />
+                        </EditTemplate>
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="Issue" Context="issue" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+                        <Template Context="issue">
+                            <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => EditRow(issue))">
+                            </RadzenButton>
+                        </Template>
+                        <EditTemplate Context="issue">
+                            <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => OnUpdateRow(issue))">
+                            </RadzenButton>
+                            <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => CancelEdit(issue))">
+                            </RadzenButton>
+                        </EditTemplate>
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="Issue" Context="issue" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
+                        <Template Context="issue">
+                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(args => DeleteRow(issue))">
+                            </RadzenButton>
+                        </Template>
+                        <EditTemplate Context="issue">
+                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteRow(issue))">
+                            </RadzenButton>
+                        </EditTemplate>
+                    </RadzenGridColumn>
+                </Columns>
+            </RadzenGrid>
+        }
+    }
 
-@code { [CascadingParameter(Name = "ViewModel")]
-            IDataGridViewModel ViewModel { get; set; } }
+</div>
+
+<style>
+    .grid-wrapper {
+        margin: 30px 50px;
+    }
+</style>
+
+
+@code {
+    [CascadingParameter(Name = "ViewModel")]
+    IDataGridViewModel ViewModel { get; set; }
+
+    RadzenGrid<Issue> issuesGrid;
+    int Count { get; set; }
+
+    int count;
+    IEnumerable<Issue> Data;
+
+    JASDBContext Context { get; set; }
+
+    void EditRow(Issue issue)
+    {
+        issuesGrid.EditRow(issue);
+    }
+
+    void OnUpdateRow(Issue issue) {
+        ViewModel.UpdateIssue(issue);
+    }
+
+    void SaveRow(Issue issue)
+    {
+        ViewModel.UpdateIssue(issue);
+    }
+
+    void CancelEdit(Issue issue)
+    {
+        issuesGrid.CancelEditRow(issue);
+        ViewModel.ReleaseChanges(issue);
+    }
+
+    void DeleteRow(Issue issue)
+    {
+        ViewModel.DeleteIssue(issue);
+    }
+
+    void InsertRow()
+    {
+        issuesGrid.InsertRow(new Issue());
+    }
+
+    void OnCreateRow(Issue issue) {
+        ViewModel.CreateIssue(issue);
+    }
+}

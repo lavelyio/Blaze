@@ -66,14 +66,14 @@ namespace JASBlazor.Redux.Actions
             /// <param name="store"></param>
             /// <param name="factory"></param>
             /// <param name="args"></param>
-            public CreateIssueAsync(Store<AppState> store, IDbContextFactory<JASDBContext> factory, GridCommandEventArgs args)
+            public CreateIssueAsync(Store<AppState> store, JASDBContext DbContext, Issue _issue)
             {
                 Store = store ?? throw new ArgumentNullException(nameof(store));
-                Factory = factory ?? throw new ArgumentNullException(nameof(factory));
-                issue = args.Item as Issue;
+                _context = DbContext ?? throw new ArgumentNullException(nameof(DbContext));
+                issue = _issue;
             }
 
-            public IDbContextFactory<JASDBContext> Factory { get; set; }
+            private JASDBContext _context { get; set; }
             public Issue issue { get; set; }
             public Store<AppState> Store { get; set; }
 
@@ -84,7 +84,6 @@ namespace JASBlazor.Redux.Actions
                 Store.Dispatch(new Issues.Clear());
 
                 await Task.Delay(500);
-                using var _context = Factory.CreateDbContext();
                 await _context.Issues.AddAsync(issue);
                 await _context.SaveChangesAsync();
                 var issues = await _context.Issues.ToListAsync();
@@ -105,15 +104,15 @@ namespace JASBlazor.Redux.Actions
             /// <param name="store"></param>
             /// <param name="factory"></param>
             /// <param name="args"></param>
-            public DeleteIssueAsync(Store<AppState> store, IDbContextFactory<JASDBContext> factory, GridCommandEventArgs args)
+            public DeleteIssueAsync(Store<AppState> store, JASDBContext DbContext, Issue _issue)
             {
                 Debug.WriteLine("Init DeleteIssue Async");
                 Store = store ?? throw new ArgumentNullException(nameof(store));
-                Factory = factory;
-                Issue = args.Item as Issue;
+                _context = DbContext;
+                Issue = _issue;
             }
 
-            public IDbContextFactory<JASDBContext> Factory { get; set; }
+            private JASDBContext _context { get; set; }
             public Issue Issue { get; set; }
             public Store<AppState> Store { get; set; }
 
@@ -122,7 +121,6 @@ namespace JASBlazor.Redux.Actions
                 Debug.WriteLine("Invoking Delete Action");
                 Store.Dispatch(new IsLoading.Set(true));
 
-                using var _context = Factory.CreateDbContext();
                 var foundIssue = await _context.Issues.FindAsync(Issue.Id);
                 if (foundIssue != null)
                 {
@@ -142,13 +140,13 @@ namespace JASBlazor.Redux.Actions
         /// </summary>
         public class FetchAsync : IAsyncRealmAction
         {
-            public FetchAsync(Store<AppState> store, IDbContextFactory<JASDBContext> factory)
+            public FetchAsync(Store<AppState> store, JASDBContext DbContext)
             {
                 Store = store ?? throw new ArgumentNullException(nameof(store));
-                Factory = factory;
+                _context = DbContext;
             }
 
-            public IDbContextFactory<JASDBContext> Factory { get; set; }
+            private JASDBContext _context { get; set; }
             public Store<AppState> Store { get; set; }
 
             public async Task Invoke()
@@ -156,7 +154,6 @@ namespace JASBlazor.Redux.Actions
                 Store.Dispatch(new IsLoading.Set(true));
                 Store.Dispatch(new Issues.Clear());
 
-                using var _context = Factory.CreateDbContext();
                 var _issues = await _context.Issues.ToListAsync();
                 var issues = new ObservableCollection<Issue>(_issues);
 
@@ -186,14 +183,14 @@ namespace JASBlazor.Redux.Actions
             /// <param name="store"></param>
             /// <param name="factory"></param>
             /// <param name="args"></param>
-            public UpdateIssueAsync(Store<AppState> store, IDbContextFactory<JASDBContext> factory, GridCommandEventArgs args)
+            public UpdateIssueAsync(Store<AppState> store,JASDBContext DbContext, Issue issue)
             {
                 Store = store ?? throw new ArgumentNullException(nameof(store));
-                Factory = factory ?? throw new ArgumentNullException(nameof(factory));
-                _issue = args.Item as Issue;
+                _context = DbContext ?? throw new ArgumentNullException(nameof(DbContext));
+                _issue = issue;
             }
 
-            public IDbContextFactory<JASDBContext> Factory { get; set; }
+            private JASDBContext _context { get; set; }
             public Store<AppState> Store { get; set; }
             private Issue _issue { get; set; }
 
@@ -203,7 +200,6 @@ namespace JASBlazor.Redux.Actions
 
                 try
                 {
-                    using var _context = Factory.CreateDbContext();
                     var issueToUpdate = await _context.Issues.FindAsync(_issue.Id);
 
                     if (issueToUpdate != null)

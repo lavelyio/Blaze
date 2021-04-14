@@ -12,24 +12,27 @@ namespace JASBlazor.ViewModels {
 
     public interface IDataGridViewModel {
 
-        public IDbContextFactory<JASDBContext> Factory { get; set; }
+        public JASDBContext Context { get; set; }
         bool IsBusy { get; set; }
         int DataItems { get; }
         Issue issue { get; set; }
         List<Issue> IsssueList { get; }
 
         ObservableCollection<Issue> Data { get; }
+        IEnumerable<Issue> DataIssues { get; }
 
         event PropertyChangedEventHandler PropertyChanged;
-        void Initialize(IDbContextFactory<JASDBContext> factory);
-        void FetchIssues();
 
-        void CreateIssue(GridCommandEventArgs args);
+        Task InitializeAsync(JASDBContext context);
 
-        void UpdateIssue(GridCommandEventArgs args);
+        Task FetchIssues();
 
-        void DeleteIssue(GridCommandEventArgs args);
+        void CreateIssue(Issue issue);
 
-        void DeleteRandomIssue();
+        void UpdateIssue(Issue issue);
+
+        void DeleteIssue(Issue issue);
+
+        void ReleaseChanges(Issue issue);
     }
 }

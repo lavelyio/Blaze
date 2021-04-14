@@ -1,11 +1,12 @@
 ﻿@page "/grid"
 
+@using System.Diagnostics
 @using JASBlazor.ViewModels
 @using JASBlazor.Components
-@using Microsoft.EntityFrameworkCore
 @using System.ComponentModel
 @using JASBlazor.Data
-@inject IDbContextFactory<JASDBContext> DbFactory
+
+@inject JASDBContext DbContext
 @inject IDataGridViewModel ViewModel
 @implements IDisposable
 
@@ -13,9 +14,11 @@
     <DataGrid />
 </CascadingValue>
 
-@code { protected override async Task OnInitializedAsync()
+@code {
+
+    protected override async Task OnInitializedAsync()
     {
-        ViewModel.Initialize(DbFactory);
+        await ViewModel.InitializeAsync(DbContext);
 
         ViewModel.PropertyChanged += async (sender, e) =>
         {
@@ -24,11 +27,13 @@
                 StateHasChanged();
             });
         };
+
         await base.OnInitializedAsync();
     }
 
     async void OnPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
     {
+        Debug.WriteLine("Property Changed: " + sender.ToString());
         await InvokeAsync(() =>
         {
             StateHasChanged();
@@ -43,4 +48,5 @@
     public void Dispose()
     {
         ViewModel.PropertyChanged -= OnPropertyChangedHandler;
-    } }
+    }
+ }

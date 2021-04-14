@@ -25,5 +25,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.5" />
     <PackageReference Include="Telerik.UI.for.Blazor.Trial" Version="2.22.0" />
     <PackageReference Include="Radzen.Blazor" Version="3.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Hubs\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 </Project>

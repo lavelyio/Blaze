@@ -1,89 +1,86 @@
 ﻿using JASBlazor.Data;
 using JASBlazor.Models;
-using Microsoft.AspNetCore.Components;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using Telerik.Blazor.Components;
-
-using JASBlazor.Data;
 
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using System;
 
-namespace JASBlazor.ViewModels
-{
-    public class DataGridViewModel : BaseViewModel, IDataGridViewModel
-    {
-        public IDbContextFactory<JASDBContext> Factory { get; set; }
+namespace JASBlazor.ViewModels {
 
-        public void Initialize(IDbContextFactory<JASDBContext> factory)
-        {
-            Factory = factory;
-            FetchIssues();
+    public class DataGridViewModel : BaseViewModel, IDataGridViewModel {
+
+        public JASDBContext Context { get; set; }
+
+        public async Task InitializeAsync(JASDBContext context) {
+            Context = context;
+            await FetchIssues();
         }
 
         private ObservableCollection<Issue> _data = new ObservableCollection<Issue>();
-
-        public ObservableCollection<Issue> Data
-        {
+        public ObservableCollection<Issue> Data {
             get => _data;
-            private set
-            {
+            private set {
                 SetValue(ref _data, value);
             }
         }
 
-        private List<Issue> _issueList = new List<Issue>();
-
-        public List<Issue> IsssueList
-        {
-            get => _issueList;
-            private set
-            {
-                SetValue(ref _issueList, value);
+        private IEnumerable<Issue> _issues;
+        public IEnumerable<Issue> DataIssues {
+            get => _issues;
+            private set {
+                SetValue(ref _issues, value);
             }
         }
 
-        private Issue _issue = new Issue();
+        private List<Issue> _issueList = new List<Issue>();
+        public List<Issue> IsssueList {
+            get => _issueList;
+            private set {
+                SetValue(ref _issueList, value);
+            }
 
-        public Issue issue
-        {
+        }
+
+        private Issue _issue = new Issue();
+        public Issue issue {
             get => _issue;
-            set
-            {
+            set {
                 SetValue(ref _issue, value);
             }
         }
 
-        public int DataItems
-        {
-            get
-            {
+        public int DataItems {
+            get {
                 return IsssueList.Where(i => i.Done.Equals(false)).Count();
             }
         }
 
-        public async void FetchIssues()
+        /// <summary>
+        /// Gets
+        /// </summary>
+        /// <returns></returns>
+        public async Task FetchIssues()
         {
             IsBusy = true;
-            using (var _context = Factory.CreateDbContext())
-            {
-                IsssueList = await _context.Issues.ToListAsync();
+
+            try {
+                IsssueList = await Context.Issues.ToListAsync();
                 Debug.WriteLine(" Fetching Issues: " + IsssueList.Count());
+
                 Data = new ObservableCollection<Issue>(IsssueList);
                 OnPropertyChanged(nameof(Data));
+            }
+            catch (Exception ex) {
+                throw;
+            }
+            finally {
                 IsBusy = false;
             }
-        }
-
-        public async void DeleteRandomIssue()
-        {
         }
 
 
@@ -92,24 +89,30 @@ namespace JASBlazor.ViewModels
         /// </summary>
         /// <param name="issue"></param>
         /// <returns></returns>
-        public async void CreateIssue(GridCommandEventArgs args)
+        public async void CreateIssue(Issue issue)
         {
-            Issue issue = args.Item as Issue;
 
             if (issue == null) { return; }
 
             IsBusy = true;
 
-            try
-            {
-                using var Context = Factory.CreateDbContext();
-                await Context.Issues.AddAsync(issue);
+            try {
+                Context.Issues.Add(issue);
                 await Context.SaveChangesAsync();
+
                 Data.Add(issue);
                 OnPropertyChanged(nameof(Data));
-                IsBusy = false;
             }
-            catch (DBConcurrencyException err) { }
+            catch (DbUpdateConcurrencyException ex) {
+
+                // Catch Exception, reload the conflicting issue from
+                //  the database; refreshing EFCore's cache
+                ex.Entries.Single().Reload();
+
+                // Save once and for all
+                Context.SaveChanges();
+
+            }
             finally { IsBusy = false; }
         }
 
@@ -118,33 +121,32 @@ namespace JASBlazor.ViewModels
         /// </summary>
         /// <param name="issue"></param>
         /// <returns></returns>
-        public async void DeleteIssue(GridCommandEventArgs args)
+        public async void DeleteIssue(Issue issue)
         {
-            IsBusy = true;
-            Issue issue = args.Item as Issue;
-            if (issue == null)
-            {
+            
+            if (issue == null) {
                 return;
             }
-            try
-            {
-                using var Context = Factory.CreateDbContext();
-                var foundIssue = await Context.Issues.FindAsync(issue.Id);
-                if (foundIssue != null)
-                {
-                    Context.Issues.Remove(foundIssue);
-                    await Context.SaveChangesAsync();
-                    Data.Remove(issue);
-                    OnPropertyChanged(nameof(Data));
-                }
+            IsBusy = true;
+
+            try {
+
+                Context.Issues.Remove(issue);
+                await Context.SaveChangesAsync();
+                Data.Remove(issue);
+                OnPropertyChanged(nameof(Data));
             }
-            catch (DBConcurrencyException err)
-            {
+            catch (DbUpdateConcurrencyException ex) {
+
+                // Catch Exception, reload the conflicting issue from
+                //  the database; refreshing EFCore's cache
+                ex.Entries.Single().Reload();
+
+                // Save once and for all
+                Context.SaveChanges();
+
             }
-            finally
-            {
-                IsBusy = false;
-            }
+            finally { IsBusy = false; }
         }
 
         /// <summary>
@@ -152,25 +154,46 @@ namespace JASBlazor.ViewModels
         /// </summary>
         /// <param name="issue"></param>
         /// <returns></returns>
-        public async void UpdateIssue(GridCommandEventArgs args)
+        public async void UpdateIssue(Issue issue)
         {
-            IsBusy = true;
-            Issue issue = args.Item as Issue;
-            if (issue == null)
-            {
+            if (issue == null) {
                 return;
             }
-            try
-            {
-                using var Context = Factory.CreateDbContext();
+
+            IsBusy = true;
+
+            try {
+
                 Context.Issues.Update(issue);
                 await Context.SaveChangesAsync();
 
                 OnPropertyChanged(nameof(Data));
-                IsBusy = false;
             }
-            catch (DBConcurrencyException err) { }
+            catch (DbUpdateConcurrencyException ex) {
+
+                // Catch Exception, reload the conflicting issue from
+                //  the database; refreshing EFCore's cache
+                ex.Entries.Single().Reload();
+
+                // Save once and for all
+                Context.SaveChanges();
+
+            }
             finally { IsBusy = false; }
+        }
+
+        /// <summary>
+        /// Update the tracked Entity, essentially "releasing" it from it's
+        ///  changed state
+        /// </summary>
+        /// <param name="issue"></param>
+        public void ReleaseChanges(Issue issue) {
+            
+            var issueEntry = Context.Entry(issue);
+            if (issueEntry.State == EntityState.Modified) {
+                issueEntry.CurrentValues.SetValues(issueEntry.OriginalValues);
+                issueEntry.State = EntityState.Unchanged;
+            }
         }
     }
 }

@@ -13,9 +13,12 @@
         <p>
             Enter your name to start chatting:
         </p>
-
-        <input type="text" maxlength="32" @bind="@_username" />
-        <button type="button" @onclick="@Chat"><span class="oi oi-chat" aria-hidden="true"></span> Chat!</button>
+        <div class="uk-margin">
+            <div class="uk-inline">
+                <button class="uk-form-icon uk-form-icon-flip" @onclick="@Chat" uk-icon="icon: comments"></button>
+                <input class="uk-input" maxlength="32" @bind="@_username" type="text">
+            </div>
+        </div>
 
         // Error messages
         @if (_message != null)
@@ -49,8 +52,10 @@
                 }
             }
             <hr />
-            <textarea class="input-lg" placeholder="enter your comment" @bind="@_newMessage"></textarea>
-            <button class="btn btn-default" @onclick="@(() => SendAsync(_newMessage))">Send</button>
+            <div style="display: flex; flex-direction: column">
+                <textarea class="input-lg uk-textarea" placeholder="enter your comment" @bind="@_newMessage"></textarea>
+                <button class="uk-button uk-button-primary" @onclick="@(() => SendAsync(_newMessage))">Send</button>
+            </div>
         </div>
     }
 </div>

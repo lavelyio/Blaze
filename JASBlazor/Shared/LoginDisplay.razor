@@ -1,11 +1,46 @@
 ﻿@using JASBlazor.Redux
 @using JASBlazor.Redux.Actions.Counter
 @using Blazor.Realm.Extensions
+@inject NavigationManager MyNavigationManager
 @inherits RealmComponent<AppState>
 
 <AuthorizeView>
     <Authorized>
         <div class="jas-header-account">
+            <ul class="nav flex-row">
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="/" Match="NavLinkMatch.All" ActiveClass="uk-active">
+                        <span class="oi oi-home" aria-hidden="true"></span> Home
+                    </NavLink>
+                </li>
+                <li class="dropdown-divider">
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="/chatroom">
+                        <span class="oi oi-chat" aria-hidden="true"></span> Chat room
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="/todo">
+                        <span class="oi oi-check" aria-hidden="true"></span> To Do
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="/grid">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Grid
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="/store-grid">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Store Driven Grid
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="/counter">
+                        <span class="oi oi-timer" aria-hidden="true"></span> Counter
+                    </NavLink>
+                </li>
+            </ul>
             <span class="jas-head-counter">Current Count: <span>@State.Count</span></span>
             <span class="jas-font-sm">Welcome,</span> <p class="jas-head-title">@context.User.Identity.Name</p>
             <MatIcon Icon="account_circle" />
@@ -33,6 +68,41 @@
     </Authorized>
     <NotAuthorized>
         <div style="display: flex; align-items: center">
+            <ul class="nav flex-row">
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
+                        <span class="oi oi-home" aria-hidden="true"></span> Home
+                    </NavLink>
+                </li>
+                <li class="dropdown-divider">
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="/chatroom">
+                        <span class="oi oi-chat" aria-hidden="true"></span> Chat room
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="/todo">
+                        <span class="oi oi-check" aria-hidden="true"></span> To Do
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="/grid">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Grid
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="/store-grid">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Store Driven Grid
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="/counter">
+                        <span class="oi oi-timer" aria-hidden="true"></span> Counter
+                    </NavLink>
+                </li>
+            </ul>
+
             <span class="jas-head-counter">Current Count: <span>@State.Count</span></span>
             <NavLink href="MicrosoftIdentity/Account/SignIn">
                 <MatIcon Icon="account_circle" />
